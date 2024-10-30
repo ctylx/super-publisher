@@ -1,0 +1,7 @@
+[project]
+name = "super-publisher"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = ["pyperclip>=1.9.0", "selenium>=4.25.0", "streamlit>=1.39.0"]
