@@ -47,7 +47,7 @@ def get_chrome_driver():
 
     # 设置 Chrome 选项（例如，无头模式）
     chrome_options = Options()
-    chrome_options.page_load_strategy = 'normal'
+    chrome_options.page_load_strategy = "normal"
     chrome_options.debugger_address = "127.0.0.1:9222"
     # chrome_options.add_argument("--headless")
     # chrome_options.add_argument("--no-sandbox")
@@ -75,7 +75,7 @@ def publish_video(driver, video_file, text_file):
 
     # 设置等待
     # wait = WebDriverWait(driver, 10)
-    
+
     # 发布图文
     # image_tab = driver.find_element(By.XPATH, '//div[@data-placeholder="发布图文"]')
     # image_tab.click()
@@ -154,7 +154,9 @@ def publish_video(driver, video_file, text_file):
 
 if __name__ == "__main__":
     current_directory = os.path.abspath(os.getcwd())
-    video_file = f"{current_directory}/assets/338806611-d96e5e50-cfe7-4f55-a0db-75f3ac28b39f.mp4"
+    video_file = (
+        f"{current_directory}/assets/338806611-d96e5e50-cfe7-4f55-a0db-75f3ac28b39f.mp4"
+    )
     text_file = f"{current_directory}/assets/test"
     driver = get_chrome_driver()
     publish_video(driver, video_file, text_file)
