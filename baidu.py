@@ -9,6 +9,8 @@ login_url = "https://pan.baidu.com"
 
 
 def get_share_link(driver, url):
+    driver.get(url)
+
     # right click on element
     td = driver.find_element(
         By.CSS_SELECTOR,
@@ -55,7 +57,6 @@ if __name__ == "__main__":
     driver = driver.init_driver()
     cookies.add_cookie(driver, login_url, "baidu")
     driver.refresh()
-    driver.get(url)
 
     time.sleep(2)
     print(get_share_link(driver, url))

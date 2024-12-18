@@ -5,6 +5,7 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
+from selenium.webdriver import Keys
 
 
 def init_driver():
@@ -46,12 +47,27 @@ def login_to_im(driver, cookie_file):
 
 
 def switch_conversation(driver):
-    item = driver.find_element(
+    items = driver.find_elements(
         By.XPATH,
-        "/html//div[@id='conv-list-scrollable']/div[@class='rc-virtual-list']/div[@class='rc-virtual-list-holder']//div[@class='rc-virtual-list-holder-inner']/div/div//div[@class='ant-dropdown-trigger']/div/div",
+        "/html//div[@id='conv-list-scrollable']/div[@class='rc-virtual-list']//div[@class='rc-virtual-list-holder-inner']/div/div/div",
     )
-    item.click()
+    print(len(items))
+    items[2].click()
+    # item = driver.find_element(
+    #     By.XPATH,
+    #     "/html//div[@id='conv-list-scrollable']/div[@class='rc-virtual-list']/div[@class='rc-virtual-list-holder']//div[@class='rc-virtual-list-holder-inner']/div/div//div[@class='ant-dropdown-trigger']/div/div",
+    # )
+    # item.click()
     time.sleep(2)
+
+
+def check_paid(driver):
+    order_msgs = driver.find_elements(
+        By.XPATH,
+        "/html//div[@id='msg-list-container']/div[@class='ant-spin-nested-loading css-apn68']//ul[@class='ant-list-items']/div/li[@class='ant-list-item']//div[@class='msg-dx-title--BLWdPAHj']",
+    )
+    for msg in order_msgs:
+        print(msg.text)
 
 
 def get_chat_message(driver):
@@ -78,16 +94,36 @@ def get_chat_message(driver):
     )
 
 
+def send_message(driver, text):
+    # input text
+    textarea = driver.find_element(
+        By.XPATH,
+        "/html//div[@id='content']//div[@class='ant-layout ant-layout-has-sider chat-container--gftCko_u css-apn68']//textarea[@placeholder='请输入消息，按Enter键发送或点击发送按钮发送']",
+    )
+    textarea.send_keys(Keys.TAB)
+    textarea.clear()
+    textarea.send_keys(text)
+
+    # click send
+    send_button = driver.find_element(
+        By.XPATH,
+        "/html//div[@id='content']//div[@class='ant-layout ant-layout-has-sider chat-container--gftCko_u css-apn68']//div[@class='sendbox-bottom--O2c5fyIe']/button[@type='button']",
+    )
+    send_button.click()
+
+
 def start_loop(driver):
     pass
 
 
 if __name__ == "__main__":
     driver = init_driver()
-    login_to_im(driver, "./cookies/cookies.pkl")
+    login_to_im(driver, "./cookies/goofish_cookies.pkl")
     switch_conversation(driver)
     messages = get_chat_message(driver)
     for msg in messages:
         print(msg.text)
 
+    check_paid(driver)
+    # send_message(driver, "hello")
     time.sleep(100)

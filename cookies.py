@@ -30,4 +30,5 @@ if __name__ == "__main__":
     chrome_options.add_argument("--disable-gpu")
     chrome_options.add_argument("--no-sandbox")
     driver = webdriver.Chrome(options=chrome_options)
-    save_cookie(driver, "https://pan.baidu.com", "baidu")
+    # save_cookie(driver, "https://pan.baidu.com", "baidu")
+    save_cookie(driver, "https://www.goofish.com", "goofish")
