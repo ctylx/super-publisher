@@ -1,0 +1,17 @@
+# login
+join_button.xpath: //button[text()='快速进入']
+
+# conversation
+tag_to_be_sent.xpath: .//div[@class='order-wait--ZFalqdqh']
+conversation.xpath: /html//div[@id='conv-list-scrollable']/div[@class='rc-virtual-list']//div[@class='rc-virtual-list-holder-inner']/div/div/div
+
+# message
+message_box.id: message-list-scrollable
+message_list.xpath: /html//div[@id='msg-list-container']//ul[@class='ant-list-items']/div/li[@class='ant-list-item']//div[@class='ant-dropdown-trigger message-content--kBUbolyy']/div/div
+card_msg_title.xpath: .//div[@class='msg-dx-title--BLWdPAHj']
+text_msg_recv.xpath: .//div[@class='message-text--zV88pB7N message-text-left--Wvuv8NsL']
+text_msg_send.xpath: .//div[@class='message-text--zV88pB7N message-text-right--Vhy6k0cY']
+
+# input
+textarea.xpath: /html//div[@id='content']//div[@class='ant-layout ant-layout-has-sider chat-container--gftCko_u css-apn68']//textarea[@placeholder='请输入消息，按Enter键发送或点击发送按钮发送']
+send_button.xpath: /html//div[@id='content']//div[@class='ant-layout ant-layout-has-sider chat-container--gftCko_u css-apn68']//div[@class='sendbox-bottom--O2c5fyIe']/button[@type='button']
