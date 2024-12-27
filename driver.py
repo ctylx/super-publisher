@@ -3,6 +3,7 @@ from seleniumwire import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 import yaml
+import time
 
 
 locator_dict = dict()
@@ -10,23 +11,32 @@ locator_order = [By.ID, By.XPATH, By.CSS_SELECTOR]
 
 
 class LocatorKey:
-    # login
-    JOIN_BUTTON = "join_button"
+    # goofish
+    GF_JOIN_BUTTON = "gf_join_button"
+    GF_CONVERSATION = "gf_conversation"
+    GF_TAG_TO_BE_SENT = "gf_tag_to_be_sent"
+    GF_MESSAGE_BOX = "gf_message_box"
+    GF_MESSAGE_LIST = "gf_message_list"
+    GF_CARD_MSG_TITLE = "gf_card_msg_title"
+    GF_TEXT_MSG_RECV = "gf_text_msg_recv"
+    GF_TEXT_MSG_SEND = "gf_text_msg_send"
+    GF_TEXTAREA = "gf_textarea"
+    GF_SEND_BUTTON = "gf_send_button"
 
-    # conversation
-    CONVERSATION = "conversation"
-    TAG_TO_BE_SENT = "tag_to_be_sent"
+    # baidu
+    BD_HOME_AD = "bd_home_ad"
+    BD_RESOURCE_ROW = "bd_resource_row"
+    BD_SHARE_BUTTON = "bd_share_button"
+    BD_SHARE_SEVEN_DAYS = "bd_share_seven_days"
+    BD_SHARE_CREATE_LINK = "bd_share_create_link"
+    BD_SHARE_COPY_LINK = "bd_share_copy_link"
 
-    # message
-    MESSAGE_BOX = "message_box"
-    MESSAGE_LIST = "message_list"
-    CARD_MSG_TITLE = "card_msg_title"
-    TEXT_MSG_RECV = "text_msg_recv"
-    TEXT_MSG_SEND = "text_msg_send"
 
-    # input
-    TEXTAREA = "textarea"
-    SEND_BUTTON = "send_button"
+class NoElementException(Exception):
+    def __init__(self, key, message):
+        super().__init__(message)
+        self.message = message
+        self.key = key
 
 
 def load_config(file_path):
@@ -69,21 +79,38 @@ def find_elements(driver, key):
     locators = locator_dict[key]
     by = list(locators.keys())[0]
     value = locators[by]
+    by = by.replace("_", " ")
     return driver.find_elements(by, value)
 
 
-def find_element(driver, key):
+def find_element(driver, key, raise_excpetion=True):
     try:
         if key not in locator_dict:
-            return None
+            if raise_excpetion:
+                raise NoElementException(key, f"Element of '{key}' not found")
+            else:
+                return None
 
         locators = locator_dict[key]
         by = list(locators.keys())[0]
         value = locators[by]
+        by = by.replace("_", " ")
         return driver.find_element(by, value)
 
     except NoSuchElementException:
-        return None
+        if raise_excpetion:
+            raise NoElementException(key, f"Element of '{key}' not found")
+        else:
+            return None
+
+
+def click_element(driver, key, sleep_time=0):
+    element = find_element(driver, key)
+    assert element is not None
+    element.click()
+
+    time.sleep(sleep_time)
+    return element
 
 
 if __name__ == "__main__":

@@ -1,62 +1,52 @@
-from selenium.webdriver.common.by import By
-from selenium.webdriver.common.action_chains import ActionChains
-import pyperclip
-import cookies
-import driver
 import time
+import pyperclip
+from cookies import add_cookie
+
+from driver import (
+    NoElementException,
+    click_element,
+    init_driver,
+    LocatorKey,
+    find_element,
+)
+from selenium.webdriver.common.action_chains import ActionChains
 
 login_url = "https://pan.baidu.com"
+resource_url = "https://pan.baidu.com/disk/main#/index?category=all&path=%2F%E6%88%91%E7%9A%84%E9%9F%B3%E4%B9%90%2FSSS"
 
 
 def get_share_link(driver, url):
     driver.get(url)
+    time.sleep(3)
+    if find_element(driver, LocatorKey.BD_HOME_AD, False):
+        driver.execute_script("document.elementFromPoint(10, 10).click();")
 
-    # right click on element
-    td = driver.find_element(
-        By.CSS_SELECTOR,
-        "[index='0'] [draggable] div:nth-of-type(2)",
-    )
-    action = ActionChains(driver)
-    action.context_click(td).perform()
+    try:
+        # 1. right click on element
+        td = find_element(driver, LocatorKey.BD_RESOURCE_ROW)
+        assert td is not None
+        action = ActionChains(driver)
+        action.context_click(td).perform()
+        pyperclip.copy("")
 
-    # click share button
-    share_btn = driver.find_element(
-        By.CSS_SELECTOR,
-        "body .wp-s-ctx-menu .is-has-icon:nth-of-type(4)",
-    )
-    share_btn.click()
+        # 2. click share button
+        # 3. select 7 days for share
+        # 4. create share link
+        # 5. copy share link
+        click_element(driver, LocatorKey.BD_SHARE_BUTTON, 2)
+        click_element(driver, LocatorKey.BD_SHARE_SEVEN_DAYS)
+        click_element(driver, LocatorKey.BD_SHARE_CREATE_LINK, 2)
+        click_element(driver, LocatorKey.BD_SHARE_COPY_LINK)
+        return pyperclip.paste()
 
-    # select 7 days for share
-    time.sleep(2)
-    seven_days = driver.find_element(
-        By.XPATH,
-        "//div[@id='pane-link']//form//div[@class='wp-s-share-to-link__create-form-radiu']/div[@role='radiogroup']/label[2]/span[@class='u-radio__label']",
-    )
-    seven_days.click()
-
-    # create link
-    create_link = driver.find_element(
-        By.CSS_SELECTOR,
-        ".is-round.u-button.u-button--medium.u-button--primary.wp-s-dialog-button-hoc.wp-s-share-to-link__create-form-submit--button",
-    )
-    create_link.click()
-
-    # copy link
-    time.sleep(2)
-    copy_link = driver.find_element(
-        By.XPATH,
-        "//div[@id='pane-link']/div[@class='wp-s-share-to-link']/div//div[@class='wp-s-share-to-link__link-copy-wrapper']/button[@type='button']",
-    )
-    copy_link.click()
-    return pyperclip.paste()
+    except NoElementException as e:
+        print(e.message)
 
 
 if __name__ == "__main__":
-    url = "https://pan.baidu.com/disk/main#/index?category=all&path=%2F%E6%88%91%E7%9A%84%E9%9F%B3%E4%B9%90%2FSSS"
-
-    driver = driver.init_driver()
-    cookies.add_cookie(driver, login_url, "baidu")
+    driver = init_driver()
+    add_cookie(driver, login_url, "baidu")
     driver.refresh()
-
     time.sleep(2)
-    print(get_share_link(driver, url))
+
+    print(get_share_link(driver, resource_url))

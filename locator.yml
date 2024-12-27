@@ -1,17 +1,29 @@
+### goofish
 # login
-join_button.xpath: //button[text()='快速进入']
+gf_join_button.xpath: //button[text()='快速进入']
 
 # conversation
-tag_to_be_sent.xpath: .//div[@class='order-wait--ZFalqdqh']
-conversation.xpath: /html//div[@id='conv-list-scrollable']/div[@class='rc-virtual-list']//div[@class='rc-virtual-list-holder-inner']/div/div/div
+gf_tag_to_be_sent.xpath: .//div[@class='order-wait--ZFalqdqh']
+gf_conversation.xpath: /html//div[@id='conv-list-scrollable']/div[@class='rc-virtual-list']//div[@class='rc-virtual-list-holder-inner']/div/div/div
 
 # message
-message_box.id: message-list-scrollable
-message_list.xpath: /html//div[@id='msg-list-container']//ul[@class='ant-list-items']/div/li[@class='ant-list-item']//div[@class='ant-dropdown-trigger message-content--kBUbolyy']/div/div
-card_msg_title.xpath: .//div[@class='msg-dx-title--BLWdPAHj']
-text_msg_recv.xpath: .//div[@class='message-text--zV88pB7N message-text-left--Wvuv8NsL']
-text_msg_send.xpath: .//div[@class='message-text--zV88pB7N message-text-right--Vhy6k0cY']
+gf_message_box.id: message-list-scrollable
+gf_message_list.xpath: /html//div[@id='msg-list-container']//ul[@class='ant-list-items']/div/li[@class='ant-list-item']//div[@class='ant-dropdown-trigger message-content--kBUbolyy']/div/div
+gf_ard_msg_title.xpath: .//div[@class='msg-dx-title--BLWdPAHj']
+gf_ext_msg_recv.xpath: .//div[@class='message-text--zV88pB7N message-text-left--Wvuv8NsL']
+gf_ext_msg_send.xpath: .//div[@class='message-text--zV88pB7N message-text-right--Vhy6k0cY']
 
 # input
-textarea.xpath: /html//div[@id='content']//div[@class='ant-layout ant-layout-has-sider chat-container--gftCko_u css-apn68']//textarea[@placeholder='请输入消息，按Enter键发送或点击发送按钮发送']
-send_button.xpath: /html//div[@id='content']//div[@class='ant-layout ant-layout-has-sider chat-container--gftCko_u css-apn68']//div[@class='sendbox-bottom--O2c5fyIe']/button[@type='button']
+gf_extarea.xpath: /html//div[@id='content']//div[@class='ant-layout ant-layout-has-sider chat-container--gftCko_u css-apn68']//textarea[@placeholder='请输入消息，按Enter键发送或点击发送按钮发送']
+gf_end_button.xpath: /html//div[@id='content']//div[@class='ant-layout ant-layout-has-sider chat-container--gftCko_u css-apn68']//div[@class='sendbox-bottom--O2c5fyIe']/button[@type='button']
+
+### baidu
+bd_home_ad.xpath: //body/div/div[@class='nd-operate-guidance'
+# bd_resource_row.xpath: //body/div/div[@class='nd-main-layout__container']/div[@class='nd-main-layout__wrapper']/div[@class='nd-main-layout__body']/div[@class='nd-new-main-list']/div[@class='wp-s-core-pan']/div/div//div[@class='wp-s-pan-list__contain']/div/div/table/tbody/tr[1]
+bd_resource_row.xpath: //body/div/div[@class='nd-main-layout__container']/div[@class='nd-main-layout__wrapper']/div[@class='nd-main-layout__body']/div[@class='nd-new-main-list']/div[@class='wp-s-core-pan']/div//div[@class='wp-s-pan-list__contain']/div/div/table/tbody/tr[1]/td[@class='wp-s-pan-table__td']/div
+
+# share
+bd_share_button.css_selector: body .wp-s-ctx-menu .is-has-icon:nth-of-type(4)
+bd_share_seven_days.xpath: //div[@id='pane-link']//form//div[@class='wp-s-share-to-link__create-form-radiu']/div[@role='radiogroup']/label[2]/span[@class='u-radio__label']
+bd_share_create_link.xpath: .is-round.u-button.u-button--medium.u-button--primary.wp-s-dialog-button-hoc.wp-s-share-to-link__create-form-submit--button
+bd_share_copy_link.xpath: //div[@id='pane-link']/div[@class='wp-s-share-to-link']/div//div[@class='wp-s-share-to-link__link-copy-wrapper']/button[@type='button']
