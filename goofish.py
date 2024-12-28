@@ -1,6 +1,7 @@
 import time
 from enum import Enum
 from cookies import add_cookie
+from baidu import is_share_text, get_share_link
 from driver import init_driver, load_config, LocatorKey, find_element, find_elements
 
 from selenium.webdriver.support.ui import WebDriverWait
@@ -55,11 +56,7 @@ def login_to_im(driver):
 
 def is_wating_deliver(msg_list):
     for msg in reversed(msg_list):
-        if (
-            msg.sender_type == SenderType.SELLER
-            and "https://pan.baidu.com" in msg.content
-            and "提取码" in msg.content
-        ):
+        if msg.sender_type == SenderType.SELLER and is_share_text(msg.content):
             return False
         elif (
             msg.sender_type == SenderType.BUYER
@@ -70,7 +67,7 @@ def is_wating_deliver(msg_list):
 
 
 def get_chat_message(driver):
-    message_box = find_element(driver, LocatorKey.GF_MESSAGE_BOX)
+    message_box = find_element(driver, LocatorKey.GF_MESSAGE_BOX, False)
     if message_box is None:
         print("message_box is None")
         return []
@@ -90,21 +87,22 @@ def get_chat_message(driver):
         last_top = new_top
 
     # return messages
+    time.sleep(1)
     recent_messages = []
     for element in find_elements(driver, LocatorKey.GF_MESSAGE_LIST):
-        title = find_element(element, LocatorKey.GF_CARD_MSG_TITLE)
+        title = find_element(element, LocatorKey.GF_CARD_MSG_TITLE, False)
         if title:
             msg = ChatMessage(SenderType.BUYER, MessageType.CARD, title.text)
             recent_messages.append(msg)
             continue
 
-        text_recv = find_element(element, LocatorKey.GF_TEXT_MSG_RECV)
+        text_recv = find_element(element, LocatorKey.GF_TEXT_MSG_RECV, False)
         if text_recv:
             msg = ChatMessage(SenderType.BUYER, MessageType.TEXT, text_recv.text)
             recent_messages.append(msg)
             continue
 
-        text_send = find_element(element, LocatorKey.GF_TEXT_MSG_SEND)
+        text_send = find_element(element, LocatorKey.GF_TEXT_MSG_SEND, False)
         if text_send:
             msg = ChatMessage(SenderType.SELLER, MessageType.TEXT, text_send.text)
             recent_messages.append(msg)
@@ -115,14 +113,14 @@ def get_chat_message(driver):
 
 def send_message(driver, text):
     # input text
-    textarea = find_element(driver, LocatorKey.GF_TEXTAREA)
+    textarea = find_element(driver, LocatorKey.GF_TEXTAREA, False)
     if textarea:
         textarea.send_keys(Keys.TAB)
         textarea.clear()
         textarea.send_keys(text)
 
         # click send
-        send_button = find_element(driver, LocatorKey.GF_SEND_BUTTON)
+        send_button = find_element(driver, LocatorKey.GF_SEND_BUTTON, False)
         if send_button:
             send_button.click()
 
@@ -131,20 +129,23 @@ def start_auto_deliver(driver):
     while True:
         time.sleep(5)
         for conversation in find_elements(driver, LocatorKey.GF_CONVERSATION):
-            tag = find_element(conversation, LocatorKey.GF_TAG_TO_BE_SENT)
+            tag = find_element(conversation, LocatorKey.GF_TAG_TO_BE_SENT, False)
             if tag and tag.text == "等待卖家发货":
                 conversation.click()
-                time.sleep(2)
+                time.sleep(1)
+
                 print("Found conversation to deliver")
                 msg_list = get_chat_message(driver)
-                if is_wating_deliver(msg_list):
-                    send_message(driver, "hello")
+                for msg in msg_list:
+                    print(msg)
+                # if is_wating_deliver(msg_list):
+                #     send_message(driver, "hello")
 
 
 if __name__ == "__main__":
     config_file = "./locator.yml"
     load_config(config_file)
 
-    driver = init_driver()
+    driver = init_driver(True)
     login_to_im(driver)
     start_auto_deliver(driver)

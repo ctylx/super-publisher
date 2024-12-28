@@ -9,9 +9,9 @@ gf_conversation.xpath: /html//div[@id='conv-list-scrollable']/div[@class='rc-vir
 # message
 gf_message_box.id: message-list-scrollable
 gf_message_list.xpath: /html//div[@id='msg-list-container']//ul[@class='ant-list-items']/div/li[@class='ant-list-item']//div[@class='ant-dropdown-trigger message-content--kBUbolyy']/div/div
-gf_ard_msg_title.xpath: .//div[@class='msg-dx-title--BLWdPAHj']
-gf_ext_msg_recv.xpath: .//div[@class='message-text--zV88pB7N message-text-left--Wvuv8NsL']
-gf_ext_msg_send.xpath: .//div[@class='message-text--zV88pB7N message-text-right--Vhy6k0cY']
+gf_card_msg_title.xpath: .//div[@class='msg-dx-title--BLWdPAHj']
+gf_text_msg_recv.xpath: .//div[@class='message-text--zV88pB7N message-text-left--Wvuv8NsL']
+gf_text_msg_send.xpath: .//div[@class='message-text--zV88pB7N message-text-right--Vhy6k0cY']
 
 # input
 gf_extarea.xpath: /html//div[@id='content']//div[@class='ant-layout ant-layout-has-sider chat-container--gftCko_u css-apn68']//textarea[@placeholder='请输入消息，按Enter键发送或点击发送按钮发送']
@@ -20,10 +20,12 @@ gf_end_button.xpath: /html//div[@id='content']//div[@class='ant-layout ant-layou
 ### baidu
 bd_home_ad.xpath: //body/div/div[@class='nd-operate-guidance'
 # bd_resource_row.xpath: //body/div/div[@class='nd-main-layout__container']/div[@class='nd-main-layout__wrapper']/div[@class='nd-main-layout__body']/div[@class='nd-new-main-list']/div[@class='wp-s-core-pan']/div/div//div[@class='wp-s-pan-list__contain']/div/div/table/tbody/tr[1]
-bd_resource_row.xpath: //body/div/div[@class='nd-main-layout__container']/div[@class='nd-main-layout__wrapper']/div[@class='nd-main-layout__body']/div[@class='nd-new-main-list']/div[@class='wp-s-core-pan']/div//div[@class='wp-s-pan-list__contain']/div/div/table/tbody/tr[1]/td[@class='wp-s-pan-table__td']/div
+bd_resource_row.xpath: //body/div/div[@class='nd-main-layout__container']/div[@class='nd-main-layout__wrapper']/div[@class='nd-main-layout__body']/div[@class='nd-new-main-list']/div[@class='wp-s-core-pan']/div/div//div[@class='wp-s-pan-list__contain']/div/div/table/tbody/tr[1]/td[@class='wp-s-pan-table__td']/div
 
 # share
 bd_share_button.css_selector: body .wp-s-ctx-menu .is-has-icon:nth-of-type(4)
 bd_share_seven_days.xpath: //div[@id='pane-link']//form//div[@class='wp-s-share-to-link__create-form-radiu']/div[@role='radiogroup']/label[2]/span[@class='u-radio__label']
-bd_share_create_link.xpath: .is-round.u-button.u-button--medium.u-button--primary.wp-s-dialog-button-hoc.wp-s-share-to-link__create-form-submit--button
+bd_share_create_link.xpath: //div[@id='pane-link']/div[@class='wp-s-share-to-link']//div[@class='wp-s-share-to-link__create-form-submit']/button[@type='button']/span[1]
 bd_share_copy_link.xpath: //div[@id='pane-link']/div[@class='wp-s-share-to-link']/div//div[@class='wp-s-share-to-link__link-copy-wrapper']/button[@type='button']
+bd_share_link_input.xpath: //div[@id='pane-link']/div[@class='wp-s-share-to-link']/div//div[@class='wp-s-share-to-link__link-info-url-wrapper']/div/input[@type='text']
+bd_share_code_input.xpath: //div[@id='pane-link']/div[@class='wp-s-share-to-link']/div//div[@class='wp-s-share-to-link__link-pwd']/div/input[@type='text']

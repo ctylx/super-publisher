@@ -1,4 +1,4 @@
-from selenium.common.exceptions import NoSuchElementException
+from selenium.common.exceptions import InvalidSelectorException, NoSuchElementException
 from seleniumwire import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
@@ -30,6 +30,8 @@ class LocatorKey:
     BD_SHARE_SEVEN_DAYS = "bd_share_seven_days"
     BD_SHARE_CREATE_LINK = "bd_share_create_link"
     BD_SHARE_COPY_LINK = "bd_share_copy_link"
+    BD_SHARE_LINK_INPUT = "bd_share_link_input"
+    BD_SHARE_CODE_INPUT = "bd_share_code_input"
 
 
 class NoElementException(Exception):
@@ -57,13 +59,17 @@ def load_config(file_path):
         print(f"Error parsing YAML file: {e}")
 
 
-def init_driver():
-    # 设置 Selenium 无头模式
+def init_driver(headless: bool = False):
     chrome_options = Options()
-    # chrome_options.add_argument("--headless")
     chrome_options.add_argument("--disable-gpu")
     chrome_options.add_argument("--no-sandbox")
-    chrome_options.add_argument("--window-size=x1080")
+    chrome_options.add_argument("--window-size=1920,1080")
+    user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+    chrome_options.add_argument(f"user-agent={user_agent}")
+
+    # 设置 Selenium 无头模式
+    if headless:
+        chrome_options.add_argument("--headless")
 
     # 配置 Selenium Wire 来捕获请求
     return webdriver.Chrome(
@@ -87,7 +93,7 @@ def find_element(driver, key, raise_excpetion=True):
     try:
         if key not in locator_dict:
             if raise_excpetion:
-                raise NoElementException(key, f"Element of '{key}' not found")
+                raise NoElementException(key, f"Element of '{key}' not in locator_dict")
             else:
                 return None
 
@@ -97,7 +103,7 @@ def find_element(driver, key, raise_excpetion=True):
         by = by.replace("_", " ")
         return driver.find_element(by, value)
 
-    except NoSuchElementException:
+    except (NoSuchElementException, InvalidSelectorException):
         if raise_excpetion:
             raise NoElementException(key, f"Element of '{key}' not found")
         else:
@@ -111,6 +117,12 @@ def click_element(driver, key, sleep_time=0):
 
     time.sleep(sleep_time)
     return element
+
+
+def get_attribute(driver, key, attribute):
+    element = find_element(driver, key)
+    assert element is not None
+    return element.get_attribute(attribute)
 
 
 if __name__ == "__main__":
