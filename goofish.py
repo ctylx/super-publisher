@@ -1,7 +1,9 @@
+import logging
 import time
 from enum import Enum
+from logger import logger
 from cookies import add_cookie
-from baidu import is_share_text, get_share_link
+from baidu import is_share_text
 from driver import init_driver, load_config, LocatorKey, find_element, find_elements
 
 from selenium.webdriver.support.ui import WebDriverWait
@@ -47,10 +49,10 @@ def login_to_im(driver):
         if join_buttion:
             join_buttion.click()
             driver.switch_to.default_content()
-            print("Login to goofish im page success")
+            logger.info("Login to goofish im page success")
             time.sleep(3)
     except TimeoutException:
-        print("Waiting for login box timeout")
+        logger.warning("Waiting for login box timeout")
         pass
 
 
@@ -69,7 +71,7 @@ def is_wating_deliver(msg_list):
 def get_chat_message(driver):
     message_box = find_element(driver, LocatorKey.GF_MESSAGE_BOX, False)
     if message_box is None:
-        print("message_box is None")
+        logger.warning("message_box is None")
         return []
 
     # scroll to top
@@ -134,7 +136,7 @@ def start_auto_deliver(driver):
                 conversation.click()
                 time.sleep(1)
 
-                print("Found conversation to deliver")
+                logging.info("Found conversation to deliver")
                 msg_list = get_chat_message(driver)
                 for msg in msg_list:
                     print(msg)
