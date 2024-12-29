@@ -5,13 +5,20 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
-    "blinker==1.7.0",
-    "logging>=0.4.9.6",
-    "pyperclip>=1.9.0",
-    "pyyaml>=6.0.2",
-    "selenium-wire>=5.1.0",
-    "selenium>=4.25.0",
-    "setuptools>=75.6.0",
-    "streamlit>=1.39.0",
-    "websockets>=14.1",
+  "blinker==1.7.0",
+  "logging>=0.4.9.6",
+  "pyperclip>=1.9.0",
+  "pyyaml>=6.0.2",
+  "selenium-wire>=5.1.0",
+  "selenium>=4.25.0",
+  "setuptools>=75.6.0",
+  "streamlit>=1.39.0",
+  "websockets>=14.1",
 ]
+
+[project.scripts]
+main = "super_publisher.main:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"

@@ -1,16 +1,23 @@
-import logging
 import time
+import logging
 from enum import Enum
-from logger import logger
-from cookies import add_cookie
-from baidu import is_share_text
-from driver import init_driver, load_config, LocatorKey, find_element, find_elements
 
+from selenium.webdriver import Keys
+from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
-from selenium.webdriver.common.by import By
-from selenium.webdriver import Keys
+
+from super_publisher.logger import logger
+from super_publisher.cookies import add_cookie
+from super_publisher.baidu import is_share_text
+from super_publisher.driver import (
+    init_driver,
+    load_config,
+    LocatorKey,
+    find_element,
+    find_elements,
+)
 
 
 class SenderType(Enum):

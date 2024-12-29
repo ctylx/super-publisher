@@ -1,10 +1,10 @@
-from selenium.common.exceptions import InvalidSelectorException, NoSuchElementException
-from seleniumwire import webdriver
-from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.common.by import By
-import yaml
 import time
+import yaml
 
+from seleniumwire import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.options import Options
+from selenium.common.exceptions import InvalidSelectorException, NoSuchElementException
 
 locator_dict = dict()
 locator_order = [By.ID, By.XPATH, By.CSS_SELECTOR]

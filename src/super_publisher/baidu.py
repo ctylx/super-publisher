@@ -1,8 +1,9 @@
 import time
 import pyperclip
-from cookies import add_cookie
+from selenium.webdriver.common.action_chains import ActionChains
 
-from driver import (
+from super_publisher.cookies import add_cookie
+from super_publisher.driver import (
     NoElementException,
     click_element,
     get_attribute,
@@ -11,7 +12,7 @@ from driver import (
     LocatorKey,
     find_element,
 )
-from selenium.webdriver.common.action_chains import ActionChains
+
 
 login_url = "https://pan.baidu.com"
 resource_url = "https://pan.baidu.com/disk/main#/index?category=all&path=%2F%E6%88%91%E7%9A%84%E9%9F%B3%E4%B9%90%2FSSS"

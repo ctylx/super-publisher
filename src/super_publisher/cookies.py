@@ -1,7 +1,8 @@
+import time
+import pickle
+
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
-import pickle
-import time
 
 
 def save_cookie(driver, url, name):
