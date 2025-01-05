@@ -23,7 +23,7 @@ bd_home_ad.xpath: //body/div/div[@class='nd-operate-guidance'
 bd_resource_row.xpath: //body/div/div[@class='nd-main-layout__container']/div[@class='nd-main-layout__wrapper']/div[@class='nd-main-layout__body']/div[@class='nd-new-main-list']/div[@class='wp-s-core-pan']/div/div//div[@class='wp-s-pan-list__contain']/div/div/table/tbody/tr[1]/td[@class='wp-s-pan-table__td']/div
 
 # share
-bd_share_button.css_selector: body .wp-s-ctx-menu .is-has-icon:nth-of-type(4)
+bd_share_button.css_selector: body .wp-s-ctx-menu .is-has-icon:nth-of-type(3)
 bd_share_seven_days.xpath: //div[@id='pane-link']//form//div[@class='wp-s-share-to-link__create-form-radiu']/div[@role='radiogroup']/label[2]/span[@class='u-radio__label']
 bd_share_create_link.xpath: //div[@id='pane-link']/div[@class='wp-s-share-to-link']//div[@class='wp-s-share-to-link__create-form-submit']/button[@type='button']/span[1]
 bd_share_copy_link.xpath: //div[@id='pane-link']/div[@class='wp-s-share-to-link']/div//div[@class='wp-s-share-to-link__link-copy-wrapper']/button[@type='button']

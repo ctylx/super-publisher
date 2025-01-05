@@ -10,7 +10,8 @@ from selenium.common.exceptions import TimeoutException
 
 from super_publisher.logger import logger
 from super_publisher.cookies import add_cookie
-from super_publisher.baidu import is_share_text
+from super_publisher.baidu import is_share_text, get_share_link, xyj_res_url
+from super_publisher.message import send_notify
 from super_publisher.driver import (
     init_driver,
     load_config,
@@ -120,7 +121,7 @@ def get_chat_message(driver):
     return recent_messages
 
 
-def send_message(driver, text):
+def send_chat_message(driver, text):
     # input text
     textarea = find_element(driver, LocatorKey.GF_TEXTAREA, False)
     if textarea:
@@ -145,10 +146,11 @@ def start_auto_deliver(driver):
 
                 logging.info("Found conversation to deliver")
                 msg_list = get_chat_message(driver)
-                for msg in msg_list:
-                    print(msg)
-                # if is_wating_deliver(msg_list):
-                #     send_message(driver, "hello")
+                if is_wating_deliver(msg_list):
+                    share_link = get_share_link(driver, xyj_res_url)
+                    if share_link:
+                        send_chat_message(driver, share_link)
+                        send_notify("已自动发货，快去app上确认发货吧～")
 
 
 if __name__ == "__main__":

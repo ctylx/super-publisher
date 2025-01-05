@@ -1,7 +1,9 @@
 import time
+import logging
 import pyperclip
 from selenium.webdriver.common.action_chains import ActionChains
 
+from super_publisher import logger
 from super_publisher.cookies import add_cookie
 from super_publisher.driver import (
     NoElementException,
@@ -15,14 +17,15 @@ from super_publisher.driver import (
 
 
 login_url = "https://pan.baidu.com"
-resource_url = "https://pan.baidu.com/disk/main#/index?category=all&path=%2F%E6%88%91%E7%9A%84%E9%9F%B3%E4%B9%90%2FSSS"
+test_res_url = "https://pan.baidu.com/disk/main#/index?category=all&path=%2F%E6%88%91%E7%9A%84%E9%9F%B3%E4%B9%90%2FSSS"
+xyj_res_url = "https://pan.baidu.com/disk/main?_at_=1736091609313#/index?category=all&path=%2F%E8%B5%84%E6%BA%90%E5%88%86%E4%BA%AB%2F%E7%BB%98%E6%9C%AC%E9%9F%B3%E9%A2%91-%E7%8B%90%E7%8B%B8%E5%AE%B6%E8%A5%BF%E6%B8%B8%E8%AE%B0"
 
 
 def is_share_text(text):
     return "https://pan.baidu.com" in text and "提取码" in text
 
 
-def get_share_link(driver, url):
+def get_share_link(driver, url, retry_time=1):
     driver.get(url)
     time.sleep(1)
     if find_element(driver, LocatorKey.BD_HOME_AD, False):
@@ -57,6 +60,9 @@ def get_share_link(driver, url):
 
     except NoElementException as e:
         print(e.message)
+        if retry_time > 0:
+            logging.info(f"Retry get_share_link, retry time={retry_time}")
+            return get_share_link(driver, url, retry_time - 1)
 
 
 if __name__ == "__main__":
@@ -68,4 +74,4 @@ if __name__ == "__main__":
     driver.refresh()
     time.sleep(2)
 
-    print(get_share_link(driver, resource_url))
+    print(get_share_link(driver, xyj_res_url))
