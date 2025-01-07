@@ -19,13 +19,11 @@ def calculate_sign(timestamp: str):
 def send_notify(content: str):
     timestamp = str(round(time.time() * 1000))
     sign = calculate_sign(timestamp)
-    url = f"apiurl&timestamp={timestamp}&sign={sign}"
+    url = f"{apiurl}&timestamp={timestamp}&sign={sign}"
     message = {"msgtype": "text", "text": {"content": content}}
-    return requests.post(url=url, data=message)
+    return requests.post(url=url, json=message)
 
 
 if __name__ == "__main__":
-    timestamp = str(round(time.time() * 1000))
-    sign = calculate_sign(timestamp)
-    print(timestamp)
-    print(sign)
+    response = send_notify("这是一条测试消息")
+    print(response.text)

@@ -10,7 +10,7 @@ from selenium.common.exceptions import TimeoutException
 
 from super_publisher.logger import logger
 from super_publisher.cookies import add_cookie
-from super_publisher.baidu import is_share_text, get_share_link, xyj_res_url
+from super_publisher.baidu import is_share_text, login_get_share_link, xyj_res_url
 from super_publisher.message import send_notify
 from super_publisher.driver import (
     init_driver,
@@ -18,6 +18,7 @@ from super_publisher.driver import (
     LocatorKey,
     find_element,
     find_elements,
+    execute_with_new_tab,
 )
 
 
@@ -68,10 +69,7 @@ def is_wating_deliver(msg_list):
     for msg in reversed(msg_list):
         if msg.sender_type == SenderType.SELLER and is_share_text(msg.content):
             return False
-        elif (
-            msg.sender_type == SenderType.BUYER
-            and "我已付款，等待你发货" in msg.content
-        ):
+        elif msg.sender_type == SenderType.BUYER and "我已付款，等待你发货" in msg.content:
             return True
     return False
 
@@ -139,18 +137,24 @@ def start_auto_deliver(driver):
     while True:
         time.sleep(5)
         for conversation in find_elements(driver, LocatorKey.GF_CONVERSATION):
-            tag = find_element(conversation, LocatorKey.GF_TAG_TO_BE_SENT, False)
-            if tag and tag.text == "等待卖家发货":
-                conversation.click()
-                time.sleep(1)
+            try:
+                tag = find_element(conversation, LocatorKey.GF_TAG_TO_BE_SENT, False)
+                if tag and tag.text == "等待卖家发货":
+                    conversation.click()
+                    time.sleep(1)
 
-                logging.info("Found conversation to deliver")
-                msg_list = get_chat_message(driver)
-                if is_wating_deliver(msg_list):
-                    share_link = get_share_link(driver, xyj_res_url)
-                    if share_link:
-                        send_chat_message(driver, share_link)
-                        send_notify("已自动发货，快去app上确认发货吧～")
+                    logging.info("Found conversation to deliver")
+                    msg_list = get_chat_message(driver)
+                    if is_wating_deliver(msg_list):
+                        share_link = execute_with_new_tab(driver, login_get_share_link, xyj_res_url)
+                        if share_link:
+                            send_chat_message(driver, share_link)
+                            send_notify("【通知】已自动发货，快去app上确认发货吧～")
+
+            except Exception as e:
+                message = f"会话处理异常: {e}"
+                send_notify(f"【告警】{message}")
+                logger.error(message)
 
 
 if __name__ == "__main__":

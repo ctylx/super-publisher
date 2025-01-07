@@ -3,7 +3,7 @@ import logging
 import pyperclip
 from selenium.webdriver.common.action_chains import ActionChains
 
-from super_publisher import logger
+from super_publisher.logger import logger
 from super_publisher.cookies import add_cookie
 from super_publisher.driver import (
     NoElementException,
@@ -14,6 +14,7 @@ from super_publisher.driver import (
     LocatorKey,
     find_element,
 )
+from super_publisher.message import send_notify
 
 
 login_url = "https://pan.baidu.com"
@@ -28,6 +29,7 @@ def is_share_text(text):
 def get_share_link(driver, url, retry_time=1):
     driver.get(url)
     time.sleep(1)
+    driver.execute_script("document.elementFromPoint(0, 0).click();")
     if find_element(driver, LocatorKey.BD_HOME_AD, False):
         driver.execute_script("document.elementFromPoint(10, 10).click();")
 
@@ -59,10 +61,21 @@ def get_share_link(driver, url, retry_time=1):
         return f"链接: {share_link} 提取码: {share_code} 复制这段内容后打开百度网盘手机App，操作更方便哦"
 
     except NoElementException as e:
-        print(e.message)
         if retry_time > 0:
             logging.info(f"Retry get_share_link, retry time={retry_time}")
             return get_share_link(driver, url, retry_time - 1)
+
+        message = f"获取百度云盘分享链接失败: {e.message}"
+        send_notify(f"【告警】{message}")
+        logger.error(message)
+        return None
+
+
+def login_get_share_link(driver, url):
+    add_cookie(driver, login_url, "baidu")
+    driver.refresh()
+    time.sleep(2)
+    return get_share_link(driver, url)
 
 
 if __name__ == "__main__":

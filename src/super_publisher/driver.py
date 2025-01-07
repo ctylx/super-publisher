@@ -6,6 +6,8 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
 from selenium.common.exceptions import InvalidSelectorException, NoSuchElementException
 
+from super_publisher.message import send_notify
+
 locator_dict = dict()
 locator_order = [By.ID, By.XPATH, By.CSS_SELECTOR]
 
@@ -105,6 +107,7 @@ def find_element(driver, key, raise_excpetion=True):
 
     except (NoSuchElementException, InvalidSelectorException):
         if raise_excpetion:
+            send_notify(f"【告警】未找到对应页面元素：{key}")
             raise NoElementException(key, f"Element of '{key}' not found")
         else:
             return None
@@ -123,6 +126,19 @@ def get_attribute(driver, key, attribute):
     element = find_element(driver, key)
     assert element is not None
     return element.get_attribute(attribute)
+
+
+def execute_with_new_tab(driver, func, *args, **kwargs):
+    main_window = driver.current_window_handle
+    try:
+        # ActionChains(driver).key_down(Keys.COMMAND).send_keys("t").key_up(Keys.COMMAND).perform()
+        driver.execute_script("window.open('about:blank', '_blank');")
+        driver.switch_to.window(driver.window_handles[-1])
+        result = func(driver, *args, **kwargs)
+        return result
+    finally:
+        driver.close()
+        driver.switch_to.window(main_window)
 
 
 if __name__ == "__main__":
