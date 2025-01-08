@@ -45,6 +45,7 @@ class ChatMessage:
 def login_to_im(driver):
     add_cookie(driver, "https://www.goofish.com/im", "goofish")
     driver.refresh()
+    time.sleep(2)
 
     try:
         # wait for login box
@@ -59,7 +60,7 @@ def login_to_im(driver):
             join_buttion.click()
             driver.switch_to.default_content()
             logger.info("Login to goofish im page success")
-            time.sleep(3)
+            time.sleep(2)
     except TimeoutException:
         logger.warning("Waiting for login box timeout")
         pass

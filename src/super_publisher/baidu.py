@@ -1,6 +1,5 @@
 import time
 import logging
-import pyperclip
 from selenium.webdriver.common.action_chains import ActionChains
 
 from super_publisher.logger import logger
@@ -39,21 +38,13 @@ def get_share_link(driver, url, retry_time=1):
         assert td is not None
         action = ActionChains(driver)
         action.context_click(td).perform()
-        pyperclip.copy("")
 
         # 2. click share button
         # 3. select 7 days for share
         # 4. create share link
-        # 5. copy share link
         click_element(driver, LocatorKey.BD_SHARE_BUTTON, 1)
         click_element(driver, LocatorKey.BD_SHARE_SEVEN_DAYS, 1)
         click_element(driver, LocatorKey.BD_SHARE_CREATE_LINK, 1)
-        click_element(driver, LocatorKey.BD_SHARE_COPY_LINK)
-
-        # get from clipboard
-        share_text = pyperclip.paste()
-        if is_share_text(share_text):
-            return share_text
 
         # get share link and share code
         share_link = get_attribute(driver, LocatorKey.BD_SHARE_LINK_INPUT, "value")

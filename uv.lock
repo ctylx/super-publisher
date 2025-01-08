@@ -644,12 +644,6 @@ wheels = [
 ]
 
 [[package]]
-name = "pyperclip"
-version = "1.9.0"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/30/23/2f0a3efc4d6a32f3b63cdff36cd398d9701d26cda58e3ab97ac79fb5e60d/pyperclip-1.9.0.tar.gz", hash = "sha256:b7de0142ddc81bfc5c7507eea19da920b92252b548b96186caf94a5e2527d310", size = 20961 }
-
-[[package]]
 name = "pysocks"
 version = "1.7.1"
 source = { registry = "https://pypi.org/simple" }
@@ -904,7 +898,6 @@ source = { editable = "." }
 dependencies = [
     { name = "blinker" },
     { name = "logging" },
-    { name = "pyperclip" },
     { name = "pyyaml" },
     { name = "selenium" },
     { name = "selenium-wire" },
@@ -917,7 +910,6 @@ dependencies = [
 requires-dist = [
     { name = "blinker", specifier = "==1.7.0" },
     { name = "logging", specifier = ">=0.4.9.6" },
-    { name = "pyperclip", specifier = ">=1.9.0" },
     { name = "pyyaml", specifier = ">=6.0.2" },
     { name = "selenium", specifier = ">=4.25.0" },
     { name = "selenium-wire", specifier = ">=5.1.0" },
