@@ -1,5 +1,6 @@
 import time
 import asyncio
+import random
 import logging
 from enum import Enum
 
@@ -131,12 +132,13 @@ def send_chat_message(driver, text):
         send_button = find_element(driver, LocatorKey.GF_SEND_BUTTON)
         if send_button:
             send_button.click()
+            logging.info(f"Has sent message: {text}")
 
 
 async def start_auto_deliver(driver):
     logging.info("Start auto deliver...")
     while True:
-        await asyncio.sleep(10)
+        await asyncio.sleep(random.uniform(10, 30))
         logging.info("Looking for conversation waiting deliver...")
         for conversation in find_elements(driver, LocatorKey.GF_CONVERSATION):
             try:
