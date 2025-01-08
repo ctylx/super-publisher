@@ -121,22 +121,23 @@ def get_chat_message(driver):
 
 def send_chat_message(driver, text):
     # input text
-    textarea = find_element(driver, LocatorKey.GF_TEXTAREA, False)
+    textarea = find_element(driver, LocatorKey.GF_TEXTAREA)
     if textarea:
         textarea.send_keys(Keys.TAB)
         textarea.clear()
         textarea.send_keys(text)
 
         # click send
-        send_button = find_element(driver, LocatorKey.GF_SEND_BUTTON, False)
+        send_button = find_element(driver, LocatorKey.GF_SEND_BUTTON)
         if send_button:
             send_button.click()
 
 
 async def start_auto_deliver(driver):
+    logging.info("Start auto deliver...")
     while True:
         await asyncio.sleep(10)
-        logging.debug("Looking for conversation waiting deliver...")
+        logging.info("Looking for conversation waiting deliver...")
         for conversation in find_elements(driver, LocatorKey.GF_CONVERSATION):
             try:
                 tag = find_element(conversation, LocatorKey.GF_TAG_TO_BE_SENT, False)

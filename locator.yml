@@ -14,8 +14,8 @@ gf_text_msg_recv.xpath: .//div[@class='message-text--zV88pB7N message-text-left-
 gf_text_msg_send.xpath: .//div[@class='message-text--zV88pB7N message-text-right--Vhy6k0cY']
 
 # input
-gf_extarea.xpath: /html//div[@id='content']//div[@class='ant-layout ant-layout-has-sider chat-container--gftCko_u css-apn68']//textarea[@placeholder='请输入消息，按Enter键发送或点击发送按钮发送']
-gf_end_button.xpath: /html//div[@id='content']//div[@class='ant-layout ant-layout-has-sider chat-container--gftCko_u css-apn68']//div[@class='sendbox-bottom--O2c5fyIe']/button[@type='button']
+gf_textarea.xpath: /html//div[@id='content']//div[@class='ant-layout ant-layout-has-sider chat-container--gftCko_u css-apn68']//textarea[@placeholder='请输入消息，按Enter键发送或点击发送按钮发送']
+gf_send_button.xpath: /html//div[@id='content']//div[@class='ant-layout ant-layout-has-sider chat-container--gftCko_u css-apn68']//div[@class='sendbox-bottom--O2c5fyIe']/button[@type='button']
 
 ### baidu
 bd_home_ad.xpath: //div[@class='nd-operate-guidance'
