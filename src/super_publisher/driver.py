@@ -1,6 +1,7 @@
 import time
 import yaml
 import shutil
+import logging
 
 from seleniumwire import webdriver
 from selenium.webdriver.common.by import By
@@ -47,6 +48,7 @@ class NoElementException(Exception):
 
 def load_config(file_path):
     try:
+        logging.info(f"Loading config: {file_path}")
         with open(file_path, "r") as file:
             global locator_dict
             config = yaml.safe_load(file)
@@ -58,12 +60,13 @@ def load_config(file_path):
                 d[keys[-1]] = value
 
     except FileNotFoundError:
-        print("Configuration file not found")
+        logging.error("Configuration file not found")
     except yaml.YAMLError as e:
-        print(f"Error parsing YAML file: {e}")
+        logging.error(f"Error parsing YAML file: {e}")
 
 
 def init_driver(headless: bool = False):
+    logging.info(f"Initing driver, headless: {headless}")
     chrome_options = Options()
     chrome_options.add_argument("--disable-gpu")
     chrome_options.add_argument("--no-sandbox")

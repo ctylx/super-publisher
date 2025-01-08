@@ -53,7 +53,7 @@ def get_share_link(driver, url, retry_time=1):
 
     except NoElementException as e:
         if retry_time > 0:
-            logging.info(f"Retry get_share_link, retry time={retry_time}")
+            logging.info(f"Retry get_share_link, retry time: {retry_time}")
             return get_share_link(driver, url, retry_time - 1)
 
         message = f"获取百度云盘分享链接失败: {e.message}"

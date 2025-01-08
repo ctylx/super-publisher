@@ -1,4 +1,5 @@
 import time
+import asyncio
 import logging
 from enum import Enum
 
@@ -13,8 +14,6 @@ from super_publisher.cookies import add_cookie
 from super_publisher.baidu import is_share_text, login_get_share_link, xyj_res_url
 from super_publisher.message import send_notify
 from super_publisher.driver import (
-    init_driver,
-    load_config,
     LocatorKey,
     find_element,
     find_elements,
@@ -66,7 +65,7 @@ def login_to_im(driver):
         pass
 
 
-def is_wating_deliver(msg_list):
+def is_waiting_deliver(msg_list):
     for msg in reversed(msg_list):
         if msg.sender_type == SenderType.SELLER and is_share_text(msg.content):
             return False
@@ -134,9 +133,10 @@ def send_chat_message(driver, text):
             send_button.click()
 
 
-def start_auto_deliver(driver):
+async def start_auto_deliver(driver):
     while True:
-        time.sleep(5)
+        await asyncio.sleep(10)
+        logging.debug("Looking for conversation waiting deliver...")
         for conversation in find_elements(driver, LocatorKey.GF_CONVERSATION):
             try:
                 tag = find_element(conversation, LocatorKey.GF_TAG_TO_BE_SENT, False)
@@ -144,9 +144,9 @@ def start_auto_deliver(driver):
                     conversation.click()
                     time.sleep(1)
 
-                    logging.info("Found conversation to deliver")
                     msg_list = get_chat_message(driver)
-                    if is_wating_deliver(msg_list):
+                    if is_waiting_deliver(msg_list):
+                        logging.info("Found conversation waiting deliver")
                         share_link = execute_with_new_tab(driver, login_get_share_link, xyj_res_url)
                         if share_link:
                             send_chat_message(driver, share_link)
@@ -156,12 +156,3 @@ def start_auto_deliver(driver):
                 message = f"会话处理异常: {e}"
                 send_notify(f"【告警】{message}")
                 logger.error(message)
-
-
-if __name__ == "__main__":
-    config_file = "./locator.yml"
-    load_config(config_file)
-
-    driver = init_driver(True)
-    login_to_im(driver)
-    start_auto_deliver(driver)

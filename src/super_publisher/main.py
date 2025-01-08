@@ -1,11 +1,23 @@
+import logging
+import asyncio
+
 from super_publisher.driver import load_config, init_driver
 from super_publisher.goofish import login_to_im, start_auto_deliver
 
 
-def main():
+async def async_task():
+    logging.info("Starting async task")
     config_file = "./locator.yml"
     load_config(config_file)
-
     driver = init_driver(True)
-    login_to_im(driver)
-    start_auto_deliver(driver)
+
+    try:
+        login_to_im(driver)
+        task = asyncio.create_task(start_auto_deliver(driver))
+        await asyncio.gather(task)
+    finally:
+        driver.quit()
+
+
+def main():
+    asyncio.run(async_task())
