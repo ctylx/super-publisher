@@ -1,8 +1,10 @@
 import time
 import yaml
+import shutil
 
 from seleniumwire import webdriver
 from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 from selenium.common.exceptions import InvalidSelectorException, NoSuchElementException
 
@@ -74,9 +76,14 @@ def init_driver(headless: bool = False):
     if headless:
         chrome_options.add_argument("--headless")
 
+    # 获取chromedriver路径
+    driver_path = shutil.which("chromedriver")
+    assert driver_path is not None
+
     # 配置 Selenium Wire 来捕获请求
     return webdriver.Chrome(
         options=chrome_options,
+        service=Service(driver_path),
         seleniumwire_options={"verify_ssl": False},
     )
 
