@@ -1,3 +1,4 @@
+import atexit
 import logging
 import asyncio
 
@@ -10,6 +11,7 @@ async def async_task():
     config_file = "./locator.yml"
     load_config(config_file)
     driver = init_driver(True)
+    atexit.register(lambda: driver.quit())
 
     try:
         login_to_im(driver)

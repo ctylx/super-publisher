@@ -155,6 +155,9 @@ async def start_auto_deliver(driver):
                             send_chat_message(driver, share_link)
                             send_notify("【通知】已自动发货，快去app上确认发货吧～")
 
+            except TimeoutException as e:
+                logger.warning(f"WebDriver timeout, message: {e.msg}")
+                pass
             except Exception as e:
                 message = f"会话处理异常: {e}"
                 send_notify(f"【告警】{message}")
